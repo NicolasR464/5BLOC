@@ -8,7 +8,7 @@ contract Certification is ERC721URIStorage, Ownable {
 
     /* ================= CONSTANTS ================= */
 
-    uint256 public constant MAX_CERTIFICATES_PER_OWNER = 10;
+    uint256 public constant MAX_CERTIFICATES_PER_OWNER = 4;
     uint256 public constant COOLDOWN_SECONDS = 5 minutes;
     uint256 public constant LOCK_DURATION = 10 minutes;
 
