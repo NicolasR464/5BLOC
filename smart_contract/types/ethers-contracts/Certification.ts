@@ -6,11 +6,14 @@ import type { TypedContractEvent, TypedDeferredTopicFilter, TypedEventLog, Typed
   
 
   export interface CertificationInterface extends Interface {
-    getFunction(nameOrSignature: "approve" | "balanceOf" | "getApproved" | "getCertification" | "isApprovedForAll" | "issueCertification" | "name" | "owner" | "ownerOf" | "renounceOwnership" | "safeTransferFrom(address,address,uint256)" | "safeTransferFrom(address,address,uint256,bytes)" | "setApprovalForAll" | "supportsInterface" | "symbol" | "tokenURI" | "transferFrom" | "transferOwnership"): FunctionFragment;
+    getFunction(nameOrSignature: "COOLDOWN_SECONDS" | "LOCK_DURATION" | "MAX_CERTIFICATES_PER_OWNER" | "approve" | "balanceOf" | "getApproved" | "getCertification" | "isApprovedForAll" | "issueCertification" | "name" | "owner" | "ownerOf" | "renounceOwnership" | "safeTransferFrom(address,address,uint256)" | "safeTransferFrom(address,address,uint256,bytes)" | "setApprovalForAll" | "supportsInterface" | "swapWith" | "symbol" | "tokenURI" | "transferFrom" | "transferOwnership"): FunctionFragment;
 
-    getEvent(nameOrSignatureOrTopic: "Approval" | "ApprovalForAll" | "BatchMetadataUpdate" | "CertificationIssued" | "MetadataUpdate" | "OwnershipTransferred" | "Transfer"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: "Approval" | "ApprovalForAll" | "BatchMetadataUpdate" | "CertificationIssued" | "MetadataUpdate" | "OwnershipTransferred" | "SwapCertifications" | "Transfer"): EventFragment;
 
-    encodeFunctionData(functionFragment: 'approve', values: [AddressLike, BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'COOLDOWN_SECONDS', values?: undefined): string;
+encodeFunctionData(functionFragment: 'LOCK_DURATION', values?: undefined): string;
+encodeFunctionData(functionFragment: 'MAX_CERTIFICATES_PER_OWNER', values?: undefined): string;
+encodeFunctionData(functionFragment: 'approve', values: [AddressLike, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'balanceOf', values: [AddressLike]): string;
 encodeFunctionData(functionFragment: 'getApproved', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'getCertification', values: [BigNumberish]): string;
@@ -24,12 +27,16 @@ encodeFunctionData(functionFragment: 'safeTransferFrom(address,address,uint256)'
 encodeFunctionData(functionFragment: 'safeTransferFrom(address,address,uint256,bytes)', values: [AddressLike, AddressLike, BigNumberish, BytesLike]): string;
 encodeFunctionData(functionFragment: 'setApprovalForAll', values: [AddressLike, boolean]): string;
 encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string;
+encodeFunctionData(functionFragment: 'swapWith', values: [AddressLike, BigNumberish, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'symbol', values?: undefined): string;
 encodeFunctionData(functionFragment: 'tokenURI', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'transferFrom', values: [AddressLike, AddressLike, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'transferOwnership', values: [AddressLike]): string;
 
-    decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'COOLDOWN_SECONDS', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'LOCK_DURATION', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'MAX_CERTIFICATES_PER_OWNER', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'getApproved', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'getCertification', data: BytesLike): Result;
@@ -43,6 +50,7 @@ decodeFunctionResult(functionFragment: 'safeTransferFrom(address,address,uint256
 decodeFunctionResult(functionFragment: 'safeTransferFrom(address,address,uint256,bytes)', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'setApprovalForAll', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'supportsInterface', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'swapWith', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'symbol', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'tokenURI', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'transferFrom', data: BytesLike): Result;
@@ -122,6 +130,18 @@ decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Re
 
   
 
+    export namespace SwapCertificationsEvent {
+      export type InputTuple = [tokenIdA: BigNumberish, tokenIdB: BigNumberish, userA: AddressLike, userB: AddressLike];
+      export type OutputTuple = [tokenIdA: bigint, tokenIdB: bigint, userA: string, userB: string];
+      export interface OutputObject {tokenIdA: bigint, tokenIdB: bigint, userA: string, userB: string };
+      export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>
+      export type Filter = TypedDeferredTopicFilter<Event>
+      export type Log = TypedEventLog<Event>
+      export type LogDescription = TypedLogDescription<Event>
+    }
+
+  
+
     export namespace TransferEvent {
       export type InputTuple = [from: AddressLike, to: AddressLike, tokenId: BigNumberish];
       export type OutputTuple = [from: string, to: string, tokenId: bigint];
@@ -168,6 +188,30 @@ decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Re
 
     
     
+    COOLDOWN_SECONDS: TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >
+    
+
+    
+    LOCK_DURATION: TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >
+    
+
+    
+    MAX_CERTIFICATES_PER_OWNER: TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >
+    
+
+    
     approve: TypedContractMethod<
       [to: AddressLike, tokenId: BigNumberish, ],
       [void],
@@ -194,7 +238,7 @@ decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Re
     
     getCertification: TypedContractMethod<
       [tokenId: BigNumberish, ],
-      [[string, string, bigint, bigint, string, string, string, string[], bigint, bigint] & {name: string, resourceType: string, status: bigint, grade: bigint, ipfsHash: string, issuer: string, student: string, previousOwners: string[], createdAt: bigint, lastTransferAt: bigint }],
+      [[string, string, bigint, bigint, string, string, string, string, string[], bigint, bigint] & {name: string, resourceType: string, status: bigint, grade: bigint, ipfsHash: string, issuer: string, owner: string, student: string, previousOwners: string[], createdAt: bigint, lastTransferAt: bigint }],
       'view'
     >
     
@@ -280,6 +324,14 @@ decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Re
     
 
     
+    swapWith: TypedContractMethod<
+      [other: AddressLike, myTokenId: BigNumberish, otherTokenId: BigNumberish, ],
+      [void],
+      'nonpayable'
+    >
+    
+
+    
     symbol: TypedContractMethod<
       [],
       [string],
@@ -314,7 +366,22 @@ decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Re
 
     getFunction<T extends ContractMethod = ContractMethod>(key: string | FunctionFragment): T;
 
-    getFunction(nameOrSignature: 'approve'): TypedContractMethod<
+    getFunction(nameOrSignature: 'COOLDOWN_SECONDS'): TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >;
+getFunction(nameOrSignature: 'LOCK_DURATION'): TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >;
+getFunction(nameOrSignature: 'MAX_CERTIFICATES_PER_OWNER'): TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >;
+getFunction(nameOrSignature: 'approve'): TypedContractMethod<
       [to: AddressLike, tokenId: BigNumberish, ],
       [void],
       'nonpayable'
@@ -331,7 +398,7 @@ getFunction(nameOrSignature: 'getApproved'): TypedContractMethod<
     >;
 getFunction(nameOrSignature: 'getCertification'): TypedContractMethod<
       [tokenId: BigNumberish, ],
-      [[string, string, bigint, bigint, string, string, string, string[], bigint, bigint] & {name: string, resourceType: string, status: bigint, grade: bigint, ipfsHash: string, issuer: string, student: string, previousOwners: string[], createdAt: bigint, lastTransferAt: bigint }],
+      [[string, string, bigint, bigint, string, string, string, string, string[], bigint, bigint] & {name: string, resourceType: string, status: bigint, grade: bigint, ipfsHash: string, issuer: string, owner: string, student: string, previousOwners: string[], createdAt: bigint, lastTransferAt: bigint }],
       'view'
     >;
 getFunction(nameOrSignature: 'isApprovedForAll'): TypedContractMethod<
@@ -384,6 +451,11 @@ getFunction(nameOrSignature: 'supportsInterface'): TypedContractMethod<
       [boolean],
       'view'
     >;
+getFunction(nameOrSignature: 'swapWith'): TypedContractMethod<
+      [other: AddressLike, myTokenId: BigNumberish, otherTokenId: BigNumberish, ],
+      [void],
+      'nonpayable'
+    >;
 getFunction(nameOrSignature: 'symbol'): TypedContractMethod<
       [],
       [string],
@@ -411,6 +483,7 @@ getEvent(key: 'BatchMetadataUpdate'): TypedContractEvent<BatchMetadataUpdateEven
 getEvent(key: 'CertificationIssued'): TypedContractEvent<CertificationIssuedEvent.InputTuple, CertificationIssuedEvent.OutputTuple, CertificationIssuedEvent.OutputObject>;
 getEvent(key: 'MetadataUpdate'): TypedContractEvent<MetadataUpdateEvent.InputTuple, MetadataUpdateEvent.OutputTuple, MetadataUpdateEvent.OutputObject>;
 getEvent(key: 'OwnershipTransferred'): TypedContractEvent<OwnershipTransferredEvent.InputTuple, OwnershipTransferredEvent.OutputTuple, OwnershipTransferredEvent.OutputObject>;
+getEvent(key: 'SwapCertifications'): TypedContractEvent<SwapCertificationsEvent.InputTuple, SwapCertificationsEvent.OutputTuple, SwapCertificationsEvent.OutputObject>;
 getEvent(key: 'Transfer'): TypedContractEvent<TransferEvent.InputTuple, TransferEvent.OutputTuple, TransferEvent.OutputObject>;
 
     filters: {
@@ -437,6 +510,10 @@ getEvent(key: 'Transfer'): TypedContractEvent<TransferEvent.InputTuple, Transfer
 
       'OwnershipTransferred(address,address)': TypedContractEvent<OwnershipTransferredEvent.InputTuple, OwnershipTransferredEvent.OutputTuple, OwnershipTransferredEvent.OutputObject>;
       OwnershipTransferred: TypedContractEvent<OwnershipTransferredEvent.InputTuple, OwnershipTransferredEvent.OutputTuple, OwnershipTransferredEvent.OutputObject>;
+    
+
+      'SwapCertifications(uint256,uint256,address,address)': TypedContractEvent<SwapCertificationsEvent.InputTuple, SwapCertificationsEvent.OutputTuple, SwapCertificationsEvent.OutputObject>;
+      SwapCertifications: TypedContractEvent<SwapCertificationsEvent.InputTuple, SwapCertificationsEvent.OutputTuple, SwapCertificationsEvent.OutputObject>;
     
 
       'Transfer(address,address,uint256)': TypedContractEvent<TransferEvent.InputTuple, TransferEvent.OutputTuple, TransferEvent.OutputObject>;
