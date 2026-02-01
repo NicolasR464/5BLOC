@@ -2,6 +2,8 @@
 
 ## SkillChain - certification validator
 
+> [GITHUB REPOSITORY 🔗](https://github.com/NicolasR464/5BLOC.git)
+
 > Note that it is a student project.
 
 This project is about posting a certification/diploma on the blockchain, and validating it.
