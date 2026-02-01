@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "SkillChain — Diplômes sur la blockchain",
-  description: "Vérification et émission de diplômes et certifications (5BLOC)",
+  title: "SkillChain — Vérifier un diplôme",
+  description: "Vérifiez si un diplôme existe. Les diplômes sont déposés par l’école sur la blockchain (5BLOC).",
 }
 
 export default function RootLayout({

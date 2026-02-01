@@ -80,7 +80,7 @@ export default function VerifyDiplomaPage() {
       if (!res.ok) {
         setError(
           data.error === 'CERTIFICATION_NOT_FOUND'
-            ? 'Aucun diplôme pour ce numéro.'
+            ? 'Ce diplôme n’existe pas (aucun enregistrement pour ce numéro).'
             : data.error ?? 'Erreur lors de la vérification.',
         )
         return
@@ -114,15 +114,9 @@ export default function VerifyDiplomaPage() {
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4 py-10">
       <div className="mx-auto max-w-lg">
-        <Link href="/" className="text-sm text-zinc-500 hover:underline">← Accueil</Link>
-        <h1 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-          Vérifier un diplôme
-        </h1>
-        <p className="mt-1 text-zinc-600 dark:text-zinc-400">
-          Numéro du diplôme
-        </p>
-
-        <div className="mt-4 flex flex-col sm:flex-row gap-3 mb-6">
+        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">Vérifier un diplôme</h1>
+        <p className="text-zinc-600 dark:text-zinc-400 mb-6">L’authenticité de vos diplômes, vérifiable en un clic.</p>
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <input
             type="text"
             inputMode="numeric"
@@ -230,7 +224,7 @@ export default function VerifyDiplomaPage() {
         )}
 
         <p className="mt-6">
-          <Link href="/" className="text-sm text-zinc-500 hover:underline">← Accueil</Link>
+          <Link href="/" className="text-sm text-zinc-500 hover:underline">Accueil</Link>
         </p>
       </div>
     </main>
