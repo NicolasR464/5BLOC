@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { getSigner, getABI } from '@/utils/web3'
+import { SKILLCHAIN_ADDRESS } from '@/utils/contract'
 import {
     GradeLabels,
     StatusLabels,
@@ -47,9 +48,7 @@ export default function IssueCertificate() {
         // Get the ABI
         async function fetchABI() {
             try {
-                const abi = await getABI(
-                    process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
-                )
+                const abi = await getABI(SKILLCHAIN_ADDRESS)
 
                 console.log({ abi })
 
@@ -59,7 +58,7 @@ export default function IssueCertificate() {
             }
         }
 
-        if (!process.env.NEXT_PUBLIC_CONTRACT_ADDRESS) {
+        if (!SKILLCHAIN_ADDRESS) {
             console.error('No contract address provided')
             return
         }
@@ -82,7 +81,7 @@ export default function IssueCertificate() {
             if (!signer) console.error('Problem with signer')
 
             const contract = new ethers.Contract(
-                process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
+                SKILLCHAIN_ADDRESS,
                 contractABI,
                 signer,
             )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
@@ -22,7 +22,7 @@ const GRADE_LABELS: Record<number, string> = {
 function formatTimestamp(value: string | bigint): string {
   const sec = typeof value === 'string' ? Number(value) : Number(value)
   const date = new Date(sec * 1000)
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleString('fr-FR', {
     dateStyle: 'medium',
     timeStyle: 'short',
   })
@@ -35,7 +35,7 @@ function ipfsUrl(hash: string): string {
   return `${gateway}/ipfs/${cid}`
 }
 
-export default function VerifyDiplomaPage() {
+function VerifyContent() {
   const searchParams = useSearchParams()
   const tokenIdFromUrl = searchParams.get('tokenId') ?? ''
   const [tokenId, setTokenId] = useState(tokenIdFromUrl)
@@ -253,5 +253,13 @@ function DetailRow({
         {value}
       </dd>
     </div>
+  )
+}
+
+export default function VerifyDiplomaPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Chargement…</div>}>
+      <VerifyContent />
+    </Suspense>
   )
 }

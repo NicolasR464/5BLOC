@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ethers } from 'ethers'
 import { getSigner } from '@/utils/web3'
 import { SKILLCHAIN_ABI, SKILLCHAIN_ADDRESS } from '@/utils/contract'
 
-export default function TransferPage() {
+function TransferContent() {
   const searchParams = useSearchParams()
   const tokenIdFromUrl = searchParams.get('tokenId') ?? ''
 
@@ -124,5 +124,13 @@ export default function TransferPage() {
         </p>
       </div>
     </main>
+  )
+}
+
+export default function TransferPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Chargement…</div>}>
+      <TransferContent />
+    </Suspense>
   )
 }

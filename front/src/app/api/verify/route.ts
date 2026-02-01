@@ -26,8 +26,48 @@ export async function GET(request: NextRequest) {
       SKILLCHAIN_ABI,
       provider,
     )
-    const raw = await contract.getCertification(id)
-
+    const iface = contract.interface
+    const calldata = iface.encodeFunctionData('getCertification', [BigInt(id)])
+    const resultHex = await provider.call({
+      to: SKILLCHAIN_ADDRESS,
+      data: calldata,
+    })
+    if (!resultHex || resultHex === '0x') {
+      return NextResponse.json(
+        { error: 'CERTIFICATION_NOT_FOUND' },
+        { status: 404 },
+      )
+    }
+    const coder = ethers.AbiCoder.defaultAbiCoder()
+    const types = [
+      'string', 'string', 'uint8', 'uint8', 'string',
+      'address', 'address', 'address', 'address[]',
+      'uint256', 'uint256',
+    ]
+    let raw: ethers.Result
+    try {
+      raw = coder.decode(types, resultHex)
+    } catch {
+      const typesNoOwner = [
+        'string', 'string', 'uint8', 'uint8', 'string',
+        'address', 'address', 'address[]',
+        'uint256', 'uint256',
+      ]
+      raw = coder.decode(typesNoOwner, resultHex)
+      return NextResponse.json({
+        name: raw[0],
+        resourceType: raw[1],
+        status: Number(raw[2]),
+        grade: Number(raw[3]),
+        ipfsHash: raw[4],
+        issuer: raw[5],
+        owner: raw[6],
+        student: raw[6],
+        previousOwners: Array.isArray(raw[7]) ? raw[7] : [],
+        createdAt: raw[8].toString(),
+        lastTransferAt: raw[9].toString(),
+      })
+    }
     return NextResponse.json({
       name: raw[0],
       resourceType: raw[1],
@@ -42,7 +82,8 @@ export async function GET(request: NextRequest) {
       lastTransferAt: raw[10].toString(),
     })
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Erreur inconnue'
+    const message = e instanceof Error ? e.message : String(e)
+    console.error('[api/verify]', e)
     if (message.includes('CERTIFICATION_NOT_FOUND') || message.includes('not found')) {
       return NextResponse.json(
         { error: 'CERTIFICATION_NOT_FOUND' },

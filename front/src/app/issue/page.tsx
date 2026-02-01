@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ethers } from 'ethers'
@@ -21,7 +21,7 @@ const GRADE_OPTIONS = [
   { value: 5, label: 'Excellent' },
 ]
 
-export default function IssuePage() {
+function IssueContent() {
   const searchParams = useSearchParams()
   const cidFromUrl = searchParams.get('cid') ?? ''
 
@@ -318,5 +318,13 @@ export default function IssuePage() {
         </p>
       </div>
     </main>
+  )
+}
+
+export default function IssuePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Chargement…</div>}>
+      <IssueContent />
+    </Suspense>
   )
 }
