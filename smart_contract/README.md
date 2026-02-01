@@ -8,10 +8,10 @@ To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide]
 
 This example project includes:
 
--   A simple Hardhat configuration file.
--   Foundry-compatible Solidity unit tests.
--   TypeScript integration tests using `mocha` and ethers.js
--   Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+- A simple Hardhat configuration file.
+- Foundry-compatible Solidity unit tests.
+- TypeScript integration tests using `mocha` and ethers.js
+- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
 
 ## Usage
 
@@ -50,10 +50,16 @@ To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
 npx hardhat keystore set SEPOLIA_PRIVATE_KEY
 ```
 
-After setting the variable, you can run the deployment with the Sepolia network:
+Next set `SEPOLIA_RPC_URL` config variable using `hardhat-keystore`:
 
 ```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Certification.ts
+npx hardhat keystore set SEPOLIA_RPC_URL
+```
+
+After setting the variables, you can run the deployment with the Sepolia network:
+
+```shell
+npx hardhat ignition deploy ignition/modules/Certification.ts --network sepolia
 ```
 
 You will also need to verify the contract on Sepolia Etherscan, to get the ABI dynamically on the front-end.
